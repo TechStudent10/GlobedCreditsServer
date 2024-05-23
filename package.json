@@ -1,0 +1,16 @@
+{
+  "name": "globed-credits-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "globerino",
+  "main": "src/app.js",
+  "author": "TechStudent10",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "scripts": {
+    "start": "node src/app.js"
+  }
+}

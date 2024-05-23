@@ -1,0 +1,45 @@
+{
+    "owner": [
+        {
+            "name": "Dan K. Meme",
+            "accountID": 9735891,
+            "userID": 88588343
+        },
+        {
+            "name": "Availax",
+            "accountID": 1621348,
+            "userID": 8463710
+        }
+    ],
+    "staff": [
+        {
+            "name": "ninXout",
+            "accountID": 7479054,
+            "userID": 47290058
+        },
+        {
+            "name": "LimeGradient",
+            "accountID": 7214334,
+            "userID": 42454266
+        },
+        {
+            "name": "TheKiroshi",
+            "accountID": 6442871,
+            "userID": 31833361
+        }
+    ],
+    "contrib": [
+        {
+            "name": "TechStudent10",
+            "accountID": 20284359,
+            "userID": 179839933
+        }
+    ],
+    "special": [
+        {
+            "name": "HJfod",
+            "accountID": 104257,
+            "userID": 1817908
+        }
+    ]
+}
