@@ -1,7 +1,7 @@
 {
     "owner": [
         {
-            "name": "Dan K. Meme",
+            "name": "dankmeme01",
             "accountID": 9735891,
             "userID": 88588343
         },
@@ -13,9 +13,59 @@
     ],
     "staff": [
         {
-            "name": "ninXout",
-            "accountID": 7479054,
-            "userID": 47290058
+            "name": "Croozington",
+            "accountID": 18950870,
+            "userID": 172707109
+        },
+        {
+            "name": "Xanii",
+            "accountID": 1176802,
+            "userID": 7500092
+        },
+        {
+            "name": "ddest1nyy",
+            "accountID": 1249399,
+            "userID": 8533459
+        },
+        {
+            "name": "Dasshu",
+            "accountID": 1975253,
+            "userID": 7855157
+        },
+        {
+            "name": "Lxwnar",
+            "accountID": 25517837,
+            "userID": 153455117
+        },
+        {
+            "name": "BoCKTheBook",
+            "accountID": 6209270,
+            "userID": 20531100
+        },
+        {
+            "name": "ItzKiba",
+            "accountID": 4569963,
+            "userID": 15447500
+        },
+        {
+            "name": "NotTerma",
+            "accountID": 4706010,
+            "userID": 16077956
+        },
+        {
+            "name": "ciyaqil",
+            "accountID": 13640460,
+            "userID": 127054504
+        },
+        {
+            "name": "TheKiroshi",
+            "accountID": 6442871,
+            "userID": 31833361
+        },
+        {
+            "name": "Jiflol",
+            "accountID": 8262191,
+            "userID": 61991331
         },
         {
             "name": "LimeGradient",
@@ -23,9 +73,29 @@
             "userID": 42454266
         },
         {
-            "name": "TheKiroshi",
-            "accountID": 6442871,
-            "userID": 31833361
+            "name": "ManagerMagolor",
+            "accountID": 25450870,
+            "userID": 195501521
+        },
+        {
+            "name": "Skrunkly",
+            "accountID": 14462068,
+            "userID": 146500573
+        },
+        {
+            "name": "Capeling",
+            "accountID": 18226543,
+            "userID": 160504868
+        },
+        {
+            "name": "ninXout",
+            "accountID": 7479054,
+            "userID": 47290058
+        },
+        {
+            "name": "NikoSando",
+            "accountID": 737532,
+            "userID": 4354472
         }
     ],
     "contrib": [
@@ -33,13 +103,48 @@
             "name": "TechStudent10",
             "accountID": 20284359,
             "userID": 179839933
+        },
+        {
+            "name": "TheSillyDoggo",
+            "accountID": 16778880,
+            "userID": 162245660
+        },
+        {
+            "name": "angeld23",
+            "accountID": 28024715,
+            "userID": 236381167
+        },
+        {
+            "name": "uproxide",
+            "accountID": 25397826,
+            "userID": 227796112
         }
     ],
     "special": [
         {
+            "name": "MathieuAR",
+            "accountID": 3759035,
+            "userID": 13781237
+        },
+        {
             "name": "HJfod",
             "accountID": 104257,
             "userID": 1817908
+        },
+        {
+            "name": "Cvolton",
+            "accountID": 761691,
+            "userID": 6330800
+        },
+        {
+            "name": "alk1m123",
+            "accountID": 11535118,
+            "userID": 116938760
+        },
+        {
+            "name": "mat4",
+            "accountID": 5568872,
+            "userID": 19127913
         }
     ]
 }
