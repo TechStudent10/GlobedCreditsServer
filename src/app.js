@@ -10,7 +10,7 @@ let last_refreshed = Date.now()
 async function load_credits() {
     const credits_content = fs.readFileSync(path.join(process.cwd(), "credits.json")).toString()
     credits = {...JSON.parse(credits_content)}
-    
+
     last_refreshed = Date.now()
 }
 
@@ -27,12 +27,19 @@ const parseKeyMap = (keyMap) => keyMap.split(":")
 
 async function update_credits() {
     const new_credits = {}
+    let is_being_rate_limited = false
     Object.keys(credits).forEach((role) => {
+        if (is_being_rate_limited) {
+            return
+        }
         new_credits[role] = []
         credits[role].forEach((user) => {
             (async () => {
+                if (is_being_rate_limited) {
+                    return
+                }
                 let new_user = {...user}
-                console.log(user.accountID)
+                // console.log(user.accountID)
                 const res = await fetch("http://www.boomlings.com/database/getGJUserInfo20.php", {
                     method: "POST",
                     body: new URLSearchParams({
@@ -43,6 +50,11 @@ async function update_credits() {
                         "User-Agent": ""
                     }
                 }).then(res => res.text())
+                if (res.split(":"[1]) == " 1015") {
+                    console.log("being ratelimited! ending cache update")
+                    is_being_rate_limited = true
+                    return
+                }
                 const data = parseKeyMap(res)
                 const color1 = parseInt(data["10"])
                 const color2 = parseInt(data["11"])
@@ -57,7 +69,7 @@ async function update_credits() {
                 new_user["color3"] = color3
                 new_user["iconID"] = iconID
                 new_credits[role].push(new_user)
-                console.log(iconID, color1, color2, color3)
+                // console.log(iconID, color1, color2, color3)
                 // await sleep(2 * 1000)
                 credits[role].sort((a, b) => {
                     if (a.name > b.name) {
@@ -70,6 +82,8 @@ async function update_credits() {
             })()
         })
     })
+    if (is_being_rate_limited) return
+
     credits = new_credits
 }
 
