@@ -7,13 +7,10 @@ const app = express()
 let credits = {}
 let last_refreshed = Date.now()
 
-function load_credits() {
+async function load_credits() {
     const credits_content = fs.readFileSync(path.join(process.cwd(), "credits.json")).toString()
     credits = {...JSON.parse(credits_content)}
-    // credits = {...JSON.parse(`
-    // {"owner":[{"name":"Availax","accountID":1621348,"userID":8463710,"color1":6,"color2":52,"color3":11,"iconID":373},{"name":"dankmeme01","accountID":9735891,"userID":88588343,"color1":41,"color2":16,"color3":15,"iconID":1}],"staff":[{"name":"LimeGradient","accountID":7214334,"userID":42454266,"color1":2,"color2":12,"color3":15,"iconID":46},{"name":"TheKiroshi","accountID":6442871,"userID":31833361,"color1":8,"color2":11,"color3":1,"iconID":1},{"name":"ninXout","accountID":7479054,"userID":47290058,"color1":1,"color2":5,"color3":8,"iconID":77}],"contrib":[{"name":"TechStudent10","accountID":20284359,"userID":179839933,"color1":10,"color2":14,"color3":10,"iconID":79}],"special":[{"name":"HJfod","accountID":104257,"userID":1817908,"color1":8,"color2":3,"color3":15,"iconID":132}]}
-    // `)}
-
+    
     last_refreshed = Date.now()
 }
 
@@ -61,9 +58,16 @@ async function update_credits() {
                 new_user["iconID"] = iconID
                 new_credits[role].push(new_user)
                 console.log(iconID, color1, color2, color3)
-                await sleep(2 * 1000)
+                // await sleep(2 * 1000)
+                credits[role].sort((a, b) => {
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                })
             })()
-            credits[role].sort()
         })
     })
     credits = new_credits
@@ -106,8 +110,18 @@ app.get("/credits", (req, res) => {
     }
 })
 
-load_credits()
+await load_credits()
 await update_credits()
+
+fs.watch("credits.json", (eventType, filename) => {
+    if (eventType == "change") {
+        (async () => {
+            console.log("file changed! updating cache!")
+            await load_credits()
+            await update_credits()
+        })()
+    }
+})
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
