@@ -1,7 +1,9 @@
 import express from "express"
 import * as fs from "fs"
 import * as path from "path"
+import { fetch, setGlobalDispatcher, Agent } from 'undici'
 
+setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }) )
 const app = express()
 
 let credits = {}

@@ -447,7 +447,12 @@ type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-unpipe@~1.0.0, unpipe@1.0.0:
+undici@^6.18.1:
+  version "6.18.1"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.18.1.tgz#8390af4c4bed00fc32cb5f77f1c5e03e3271b8f2"
+  integrity sha512-/0BWqR8rJNRysS5lqVmfc7eeOErcOP4tZpATVjJOojjHZ71gSYVAtFhEmadcIjwMIUehh5NFyKGsXCnXIajtbA==
+
+unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz"
   integrity sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==
