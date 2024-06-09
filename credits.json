@@ -6,21 +6,9 @@
             "userID": 88588343
         },
         {
-            "name": "Availax",
+            "name": "availax",
             "accountID": 1621348,
             "userID": 8463710
-        }
-    ],
-    "dev": [
-        {
-            "name": "dankmeme01",
-            "accountID": 9735891,
-            "userID": 88588343
-        },
-        {
-            "name": "ninXout",
-            "accountID": 7479054,
-            "userID": 47290058
         }
     ],
     "staff": [
@@ -50,6 +38,11 @@
             "userID": 153455117
         },
         {
+            "name": "500skills",
+            "accountID": 12016320,
+            "userID": 40684062
+        },
+        {
             "name": "BoCKTheBook",
             "accountID": 6209270,
             "userID": 20531100
@@ -75,11 +68,6 @@
             "userID": 31833361
         },
         {
-            "name": "Jiflol",
-            "accountID": 8262191,
-            "userID": 61991331
-        },
-        {
             "name": "LimeGradient",
             "accountID": 7214334,
             "userID": 42454266
@@ -88,6 +76,11 @@
             "name": "ManagerMagolor",
             "accountID": 25450870,
             "userID": 195501521
+        },
+        {
+            "name": "Jiflol",
+            "accountID": 8262191,
+            "userID": 61991331
         },
         {
             "name": "Skrunkly",
@@ -108,9 +101,14 @@
             "name": "NikoSando",
             "accountID": 737532,
             "userID": 4354472
+        },
+        {
+            "name": "ArcticWoof",
+            "accountID": 7689052,
+            "userID": 53843371
         }
     ],
-    "contrib": [
+    "contributors": [
         {
             "name": "ninXout",
             "accountID": 7479054,

@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as path from "path"
 import { fetch, setGlobalDispatcher, Agent } from 'undici'
 
-setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }) )
+setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }))
 const app = express()
 
 let credits = {}
@@ -11,7 +11,7 @@ let last_refreshed = Date.now()
 
 async function load_credits() {
     const credits_content = fs.readFileSync(path.join(process.cwd(), "credits.json")).toString()
-    credits = {...JSON.parse(credits_content)}
+    credits = { ...JSON.parse(credits_content) }
 
     last_refreshed = Date.now()
 }
@@ -40,7 +40,7 @@ async function update_credits() {
                 if (is_being_rate_limited) {
                     return
                 }
-                let new_user = {...user}
+                let new_user = { ...user }
                 // console.log(user.accountID)
                 const res = await fetch("http://www.boomlings.com/database/getGJUserInfo20.php", {
                     method: "POST",
@@ -60,6 +60,7 @@ async function update_credits() {
                 const data = parseKeyMap(res)
                 const color1 = parseInt(data["10"])
                 const color2 = parseInt(data["11"])
+                const gameName = data["1"];
                 let color3 = parseInt(data["51"])
                 if (parseInt(data["28"]) == 0) {
                     color3 = -1
@@ -70,6 +71,7 @@ async function update_credits() {
                 new_user["color2"] = color2
                 new_user["color3"] = color3
                 new_user["iconID"] = iconID
+                new_user["gameName"] = gameName
                 new_credits[role][index] = new_user
                 // console.log(iconID, color1, color2, color3)
                 // await sleep(2 * 1000)
@@ -114,9 +116,8 @@ app.get("/credits", (req, res) => {
     and so on.
     `
 
-    console.log(credits)
     res.json(credits)
-    
+
     if (Date.now() - last_refreshed >= 24 * 3600 * 1000) { // 24 * 3600 * 1000 = 24 hours in milliseconds
         // I am aware this looks like a JavaScript warcrime
         // You'd be right
