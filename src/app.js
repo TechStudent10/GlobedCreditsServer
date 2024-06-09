@@ -34,8 +34,8 @@ async function update_credits() {
         if (is_being_rate_limited) {
             return
         }
-        new_credits[role] = []
-        credits[role].forEach((user) => {
+        new_credits[role] = Array(credits[role].length - 1)
+        credits[role].forEach((user, index) => {
             (async () => {
                 if (is_being_rate_limited) {
                     return
@@ -70,17 +70,17 @@ async function update_credits() {
                 new_user["color2"] = color2
                 new_user["color3"] = color3
                 new_user["iconID"] = iconID
-                new_credits[role].push(new_user)
+                new_credits[role][index] = new_user
                 // console.log(iconID, color1, color2, color3)
                 // await sleep(2 * 1000)
-                credits[role].sort((a, b) => {
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                })
+                // credits[role].sort((a, b) => {
+                //     if (a.name > b.name) {
+                //         return 1;
+                //     }
+                //     if (a.name < b.name) {
+                //         return -1;
+                //     }
+                // })
             })()
         })
     })
