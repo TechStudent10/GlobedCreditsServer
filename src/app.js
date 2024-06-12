@@ -1,18 +1,23 @@
 import express from "express"
 import * as fs from "fs"
 import * as path from "path"
-import { fetch, setGlobalDispatcher, Agent, ProxyAgent } from 'undici'
+import { Axios } from "axios";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+let axios;
+if (process.env.http_proxy) {
+    console.log(`using proxy ${process.env.http_proxy}`);
+    axios = new Axios({
+        timeout: 30000,
+        httpsAgent: new HttpsProxyAgent(process.env.http_proxy)
+    });
 
-if (process.env.https_proxy || process.env.http_proxy) {
-    setGlobalDispatcher(new ProxyAgent({
-        connect: { timeout: 60_000 },
-        uri: process.env.https_proxy ? process.env_https_proxy : process.env_http_proxy
-    }));
 } else {
-    setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }));
+    axios = new Axios({
+        timeout: 30000
+    });
 }
+
 const app = express()
 
 let credits = {}
@@ -59,16 +64,17 @@ async function update_credits() {
                 }
                 let new_user = { ...user };
 
-                const res = await fetch("http://www.boomlings.com/database/getGJUserInfo20.php", {
-                    method: "POST",
-                    body: new URLSearchParams({
-                        secret: "Wmfd2893gb7",
-                        targetAccountID: `${user.accountID}`
-                    }),
+                const reqdata = new URLSearchParams({
+                    secret: "Wmfd2893gb7",
+                    targetAccountID: `${user.accountID}`
+                });
+
+                const res = await axios.post("http://www.boomlings.com/database/getGJUserInfo20.php", reqdata.toString(), {
                     headers: {
-                        "User-Agent": ""
+                        "User-Agent": "",
+                        "Content-Type": "application/x-www-form-urlencoded"
                     }
-                }).then(res => res.text());
+                }).then(res => res.data);
                 if (res.split(":")[1] == " 1015") {
                     console.log("being ratelimited! ending cache update")
                     is_being_rate_limited = true
