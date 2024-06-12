@@ -138,7 +138,6 @@ app.get("/credits", (req, res) => {
     and so on.
     `
 
-    console.log(`sending ${JSON.stringify(credits)}`);
     res.json(credits)
 
     if (Date.now() - last_refreshed >= 24 * 3600 * 1000) { // 24 * 3600 * 1000 = 24 hours in milliseconds
