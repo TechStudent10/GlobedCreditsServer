@@ -9,7 +9,7 @@
   "private": true,
   "dependencies": {
     "express": "^4.19.2",
-    "undici": "^6.18.1"
+    "undici": "^6.18.2"
   },
   "scripts": {
     "start": "node src/app.js"
