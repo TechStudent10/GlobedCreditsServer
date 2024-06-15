@@ -48,6 +48,8 @@ const parseKeyMap = (keyMap) => keyMap.split(":")
 
 async function update_credits() {
     let is_being_rate_limited = false
+
+    let role_mult = 1;
     Object.keys(empty_credits).forEach((role) => {
         if (is_being_rate_limited) {
             return
@@ -57,8 +59,13 @@ async function update_credits() {
             credits[role] = Array(empty_credits[role].length)
         }
 
+        let sleep_mult = 1 * role_mult++;
         empty_credits[role].forEach((user, index) => {
             (async () => {
+                let sleep_time = sleep_mult++ * 500;
+                console.log(`task sleeping for ${sleep_time}`)
+                await sleep(sleep_time);
+
                 if (is_being_rate_limited) {
                     return
                 }
@@ -97,6 +104,7 @@ async function update_credits() {
                 new_user["gameName"] = gameName
 
                 credits[role][index] = new_user
+                console.log("finished fetching");
                 // console.log(iconID, color1, color2, color3)
                 // await sleep(2 * 1000)
                 // credits[role].sort((a, b) => {
