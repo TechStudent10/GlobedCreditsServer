@@ -62,7 +62,7 @@ async function update_credits() {
         let sleep_mult = 1 * role_mult++;
         empty_credits[role].forEach((user, index) => {
             (async () => {
-                let sleep_time = sleep_mult++ * 500;
+                let sleep_time = sleep_mult++ * (1500 + Math.random() * 1000);
                 console.log(`task sleeping for ${sleep_time}`)
                 await sleep(sleep_time);
 
