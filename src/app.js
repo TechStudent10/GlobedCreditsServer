@@ -1,17 +1,36 @@
 import express from "express"
 import * as fs from "fs"
 import * as path from "path"
-import { fetch, setGlobalDispatcher, Agent } from 'undici'
+import { Axios } from "axios";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
-setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }))
+let axios;
+if (process.env.http_proxy) {
+    console.log(`using proxy ${process.env.http_proxy}`);
+    axios = new Axios({
+        timeout: 30000,
+        httpsAgent: new HttpsProxyAgent(process.env.http_proxy)
+    });
+
+} else {
+    axios = new Axios({
+        timeout: 30000
+    });
+}
+
 const app = express()
 
 let credits = {}
+let empty_credits = {};
 let last_refreshed = Date.now()
 
 async function load_credits() {
     const credits_content = fs.readFileSync(path.join(process.cwd(), "credits.json")).toString()
-    credits = { ...JSON.parse(credits_content) }
+    try {
+        empty_credits = { ...JSON.parse(credits_content) }
+    } catch (e) {
+        console.warn(`failed to reload credits: ${e}`);
+    }
 
     last_refreshed = Date.now()
 }
@@ -28,31 +47,42 @@ const parseKeyMap = (keyMap) => keyMap.split(":")
     }, {});
 
 async function update_credits() {
-    const new_credits = {}
     let is_being_rate_limited = false
-    Object.keys(credits).forEach((role) => {
+
+    let role_mult = 1;
+    Object.keys(empty_credits).forEach((role) => {
         if (is_being_rate_limited) {
             return
         }
-        new_credits[role] = Array(credits[role].length - 1)
-        credits[role].forEach((user, index) => {
+
+        if (!Object.keys(credits).includes(role) || credits[role].length != empty_credits[role].length) {
+            credits[role] = Array(empty_credits[role].length)
+        }
+
+        let sleep_mult = 1 * role_mult++;
+        empty_credits[role].forEach((user, index) => {
             (async () => {
+                let sleep_time = sleep_mult++ * (1500 + Math.random() * 1000);
+                console.log(`task sleeping for ${sleep_time}`)
+                await sleep(sleep_time);
+
                 if (is_being_rate_limited) {
                     return
                 }
-                let new_user = { ...user }
-                // console.log(user.accountID)
-                const res = await fetch("http://www.boomlings.com/database/getGJUserInfo20.php", {
-                    method: "POST",
-                    body: new URLSearchParams({
-                        secret: "Wmfd2893gb7",
-                        targetAccountID: `${user.accountID}`
-                    }),
+                let new_user = { ...user };
+
+                const reqdata = new URLSearchParams({
+                    secret: "Wmfd2893gb7",
+                    targetAccountID: `${user.accountID}`
+                });
+
+                const res = await axios.post("http://www.boomlings.com/database/getGJUserInfo20.php", reqdata.toString(), {
                     headers: {
-                        "User-Agent": ""
+                        "User-Agent": "",
+                        "Content-Type": "application/x-www-form-urlencoded"
                     }
-                }).then(res => res.text())
-                if (res.split(":"[1]) == " 1015") {
+                }).then(res => res.data);
+                if (res.split(":")[1] == " 1015") {
                     console.log("being ratelimited! ending cache update")
                     is_being_rate_limited = true
                     return
@@ -72,7 +102,9 @@ async function update_credits() {
                 new_user["color3"] = color3
                 new_user["iconID"] = iconID
                 new_user["gameName"] = gameName
-                new_credits[role][index] = new_user
+
+                credits[role][index] = new_user
+                console.log("finished fetching");
                 // console.log(iconID, color1, color2, color3)
                 // await sleep(2 * 1000)
                 // credits[role].sort((a, b) => {
@@ -87,8 +119,6 @@ async function update_credits() {
         })
     })
     if (is_being_rate_limited) return
-
-    credits = new_credits
 }
 
 app.get("/credits", (req, res) => {
@@ -130,13 +160,19 @@ app.get("/credits", (req, res) => {
 await load_credits()
 await update_credits()
 
+let last_watch_change = Date.now();
+const watch_min_period = 1000; // 1s
+
 fs.watch("credits.json", (eventType, filename) => {
     if (eventType == "change") {
-        (async () => {
-            console.log("file changed! updating cache!")
-            await load_credits()
-            await update_credits()
-        })()
+        if (Date.now() - last_watch_change > watch_min_period) {
+            last_watch_change = Date.now();
+            (async () => {
+                console.log("file changed! updating cache!")
+                await load_credits()
+                await update_credits()
+            })()
+        }
     }
 })
 
